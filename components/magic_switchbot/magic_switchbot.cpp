@@ -21,7 +21,7 @@ void MagicSwitchBot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
-      auto chr = this->parent_->get_characteristic("0000fee7-0000-1000-8000-00805f9b34fb", "000036f6-0000-1000-8000-00805f9b34fb");
+      auto chr = this->parent_->get_characteristic(0xFEE7, 0x36F6);
       if (chr == nullptr) {
         ESP_LOGW(TAG, "[%s] No control service found at device, not an Anova..?", this->get_name().c_str());
         ESP_LOGW(TAG, "[%s] Note, this component does not currently support Anova Nano.", this->get_name().c_str());
