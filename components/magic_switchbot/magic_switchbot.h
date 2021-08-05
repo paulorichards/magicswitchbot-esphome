@@ -5,6 +5,7 @@
 #include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
 
 #ifdef ARDUINO_ARCH_ESP32
+#include <esp_gattc_api.h>
 
 namespace esphome {
 namespace magic_switchbot {
