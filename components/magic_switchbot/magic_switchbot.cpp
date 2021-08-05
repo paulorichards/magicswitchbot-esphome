@@ -27,6 +27,7 @@ void MagicSwitchBot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
         ESP_LOGW(TAG, "[%s] Note, this component does not currently support Anova Nano.", this->get_name().c_str());
         break;
       }
+      ESP_LOGW(TAG, "[%s] Connected to something", this->get_name().c_str());
       this->char_handle_ = chr->handle;
 
       auto status = esp_ble_gattc_register_for_notify(this->parent_->gattc_if, this->parent_->remote_bda, chr->handle);
@@ -44,6 +45,8 @@ void MagicSwitchBot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
       break;
     }
     case ESP_GATTC_NOTIFY_EVT: {
+      ESP_LOGW(TAG, "[%s] Notify event", this->get_name().c_str());
+      
       if (param->notify.handle != this->char_handle_)
         break;
       ESP_LOGW(TAG, "[%s] Notify event", this->get_name().c_str());
