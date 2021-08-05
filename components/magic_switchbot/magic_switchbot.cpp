@@ -13,26 +13,48 @@ void MagicSwitchBot::dump_config() {
   LOG_SENSOR("  ", "Battery Level", this->battery_level_);
 }
 
-bool MagicSwitchBot::parse_device(const esp32_ble_tracker::ESPBTDevice &device) {
-  if (device.address_uint64() != this->address_) {
-    ESP_LOGVV(TAG, "parse_device(): unknown MAC address.");
-    return false;
+void MagicSwitchBot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param) {
+  switch (event) {
+    case ESP_GATTC_DISCONNECT_EVT: {
+      this->battery_level_ = NAN;
+      this->publish_state();
+      break;
+    }
+    case ESP_GATTC_SEARCH_CMPL_EVT: {
+      auto chr = this->parent_->get_characteristic("0000fee7-0000-1000-8000-00805f9b34fb", "000036f6-0000-1000-8000-00805f9b34fb");
+      if (chr == nullptr) {
+        ESP_LOGW(TAG, "[%s] No control service found at device, not an Anova..?", this->get_name().c_str());
+        ESP_LOGW(TAG, "[%s] Note, this component does not currently support Anova Nano.", this->get_name().c_str());
+        break;
+      }
+      this->char_handle_ = chr->handle;
+
+      auto status = esp_ble_gattc_register_for_notify(this->parent_->gattc_if, this->parent_->remote_bda, chr->handle);
+      if (status) {
+        ESP_LOGW(TAG, "[%s] esp_ble_gattc_register_for_notify failed, status=%d", this->get_name().c_str(), status);
+      }
+      break;
+    }
+    case ESP_GATTC_REG_FOR_NOTIFY_EVT: {
+      ESP_LOGW(TAG, "[%s] ESP_GATTC_REG_FOR_NOTIFY_EVT", this->get_name().c_str());
+      this->node_state = espbt::ClientState::Established;
+      this->current_request_ = 0;
+      ESP_LOGW(TAG, "[%s] ESP_GATTC_REG_FOR_NOTIFY_EVT", this->get_name().c_str());
+      this->update();
+      break;
+    }
+    case ESP_GATTC_NOTIFY_EVT: {
+      if (param->notify.handle != this->char_handle_)
+        break;
+      ESP_LOGW(TAG, "[%s] Notify event", this->get_name().c_str());
+      this->publish_state();
+
+      break;
+    }
+    default:
+      break;
   }
-  ESP_LOGVV(TAG, "parse_device(): MAC address %s found.", device.address_str().c_str());
-
-  bool success = false;
-  for (auto &service_data : device.get_service_datas()) {
-
-    success = true;
-  }
-
-  if (!success) {
-    return false;
-  }
-
-  return true;
 }
-
 
 }  // namespace magic_switchbot
 }  // namespace esphome
