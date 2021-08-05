@@ -24,7 +24,6 @@ CONFIG_SCHEMA = (
     cv.Schema(
         {
             cv.GenerateID(): cv.declare_id(MagicSwitchBot),
-            cv.Required(CONF_MAC_ADDRESS): cv.mac_address,
             cv.Optional(CONF_BATTERY_LEVEL): sensor.sensor_schema(
                 UNIT_PERCENT,
                 ICON_EMPTY,
@@ -42,9 +41,7 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     await ble_client.register_ble_node(var, config)
-
-    cg.add(var.set_address(config[CONF_MAC_ADDRESS].as_hex))
-
+ 
     if CONF_BATTERY_LEVEL in config:
         sens = await sensor.new_sensor(config[CONF_BATTERY_LEVEL])
         cg.add(var.set_battery_level(sens))

@@ -10,7 +10,7 @@
 namespace esphome {
 namespace magic_switchbot {
 
-class MagicSwitchBot : public Component, public esphome::ble_client::BLEClientNode, public CustomAPIDevice {
+class MagicSwitchBot : public Component, public sensor::Sensor, public esphome::ble_client::BLEClientNode, public CustomAPIDevice {
  public:
   void setup() override;
   void loop() override;
