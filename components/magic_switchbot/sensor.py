@@ -4,7 +4,6 @@ import esphome.config_validation as cv
 from esphome.components import sensor, ble_client
 from esphome.const import (
     CONF_ID, 
-    CONF_MAC_ADDRESS, 
     CONF_BATTERY_LEVEL, 
     UNIT_PERCENT, 
     ICON_EMPTY, 
