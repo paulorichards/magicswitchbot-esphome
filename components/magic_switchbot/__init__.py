@@ -16,12 +16,7 @@ MagicSwitchbot = magic_switchbot_ns.class_(
 
 CONFIG_SCHEMA = cv.Schema(
         {
-            cv.COMPONENT_SCHEMA.extend(
-                {
-                    cv.GenerateID(): cv.declare_id(MagicSwitchbot),
-                }
-            )
-            
+            cv.GenerateID(): cv.declare_id(MagicSwitchbot),
         }
     ).extend(ble_client.BLE_CLIENT_SCHEMA)
 
