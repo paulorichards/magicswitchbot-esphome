@@ -14,19 +14,17 @@ MagicSwitchbot = magic_switchbot_ns.class_(
     "MagicSwitchbot", ble_client.BLEClientNode
 )
 
-CONFIG_SCHEMA = ( 
-    cv.Schema(
+CONFIG_SCHEMA = cv.Schema(
         {
             cv.COMPONENT_SCHEMA.extend(
                 {
-                    cv.GenerateID(CONF_ID): cv.declare_id(MagicSwitchbot),
+                    cv.GenerateID(): cv.declare_id(MagicSwitchbot),
                 }
             )
             
         }
-    )
-    .extend(ble_client.BLE_CLIENT_SCHEMA)
-)
+    ).extend(ble_client.BLE_CLIENT_SCHEMA)
+
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
