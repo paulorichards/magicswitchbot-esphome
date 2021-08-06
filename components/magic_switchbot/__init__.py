@@ -19,7 +19,7 @@ CONFIG_SCHEMA = (
         {
             cv.COMPONENT_SCHEMA.extend(
                 {
-                    cv.GenerateID(): cv.declare_id(MagicSwitchbot),
+                    cv.GenerateID(CONF_ID): cv.declare_id(MagicSwitchbot),
                 }
             )
             
