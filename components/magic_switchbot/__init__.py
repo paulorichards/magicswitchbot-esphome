@@ -11,7 +11,7 @@ DEPENDENCIES = ["ble_client"]
 
 magic_switchbot_ns = cg.esphome_ns.namespace("magic_switchbot")
 MagicSwitchBot = magic_switchbot_ns.class_(
-    "MagicSwitchBot", ble_client.BLEClientNode, cg.Component
+    "MagicSwitchBot", ble_client.BLEClientNode
 )
 
 CONFIG_SCHEMA = ( 
