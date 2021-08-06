@@ -10,14 +10,14 @@ from esphome.const import (
 DEPENDENCIES = ["ble_client"]
 
 magic_switchbot_ns = cg.esphome_ns.namespace("magic_switchbot")
-MagicSwitchBot = magic_switchbot_ns.class_(
-    "MagicSwitchBot", ble_client.BLEClientNode
+MagicSwitchbot = magic_switchbot_ns.class_(
+    "MagicSwitchbot", ble_client.BLEClientNode
 )
 
 CONFIG_SCHEMA = ( 
     cv.Schema(
         {
-            cv.GenerateID(): cv.declare_id(MagicSwitchBot),
+            cv.GenerateID(): cv.declare_id(MagicSwitchbot),
         }
     )
     .extend(ble_client.BLE_CLIENT_SCHEMA)

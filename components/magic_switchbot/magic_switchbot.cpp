@@ -8,11 +8,11 @@ namespace magic_switchbot {
 
 static const char *const TAG = "magic_switchbot";
 
-void MagicSwitchBot::dump_config() {
-  ESP_LOGCONFIG(TAG, "Magic SwitchBot");
+void MagicSwitchbot::dump_config() {
+  ESP_LOGCONFIG(TAG, "Magic Switchbot");
 }
 
-void MagicSwitchBot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param) {
+void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param) {
   switch (event) {
     case ESP_GATTC_OPEN_EVT: {
       if (param->open.status == ESP_GATT_OK) {
