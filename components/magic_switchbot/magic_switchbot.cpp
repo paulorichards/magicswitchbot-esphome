@@ -95,7 +95,7 @@ void MagicSwitchbot::login(){
 
 void MagicSwitchbot::decode(uint8_t *value, uint16_t length, uint8_t *output ){
   uint8_t iv[16];
-  mbedtls_aes_crypt_cbc( &aes_context_, MBEDTLS_AES_ENCRYPT, length, iv, 16, output );
+  mbedtls_aes_crypt_cbc( &aes_context_, MBEDTLS_AES_DECRYPT, length, iv, value, output );
   
 }
 
