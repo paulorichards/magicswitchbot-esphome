@@ -3,7 +3,6 @@
 #include "esphome/core/component.h"
 #include "esphome/components/ble_client/ble_client.h"
 #include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
-#include "protocol.h"
 
 #ifdef ARDUINO_ARCH_ESP32
 #include <esp_gattc_api.h>
