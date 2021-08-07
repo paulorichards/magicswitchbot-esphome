@@ -44,6 +44,7 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
       this->node_state = espbt::ClientState::Established;
       this->current_request_ = 0;
       ESP_LOGI(TAG, "Registered for notification");
+      this->check_battery();
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {      
@@ -58,7 +59,7 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
         if (status) {
           ESP_LOGI(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
         }
-        this->check_battery();
+   
 
       }
       break;
