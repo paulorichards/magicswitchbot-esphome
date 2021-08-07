@@ -27,6 +27,8 @@ void MagicSwitchbot::setup(){
 void MagicSwitchbot::loop(){}
 
 void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param) {
+  ESP_LOGI(TAG, "Event");
+
   switch (event) {
     case ESP_GATTC_REG_FOR_NOTIFY_EVT: {
       this->node_state = espbt::ClientState::Established;
@@ -36,15 +38,15 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
     case ESP_GATTC_SEARCH_CMPL_EVT: {
       auto chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID);
       if (chr == nullptr) {
-        ESP_LOGD(TAG, "No control service found at device, not an Anova..?");
-        ESP_LOGD(TAG, "Note, this component does not currently support Anova Nano.");
+        ESP_LOGI(TAG, "No control service found at device, not an Anova..?");
+        ESP_LOGI(TAG, "Note, this component does not currently support Anova Nano.");
         break;
       }
       this->char_handle_ = chr->handle;
 
       auto status = esp_ble_gattc_register_for_notify(this->parent_->gattc_if, this->parent_->remote_bda, chr->handle);
       if (status) {
-        ESP_LOGD(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
+        ESP_LOGI(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
       }
       break;
     }
@@ -61,7 +63,7 @@ void MagicSwitchbot::get_token(){
   auto chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_WRITE_UUID);
       auto status = esp_ble_gattc_write_char(this->parent_->gattc_if, this->parent_->conn_id, chr->handle, 16, output, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
    if (status)
-            ESP_LOGD(TAG, "esp_ble_gattc_write_char failed, status=%d", 
+            ESP_LOGI(TAG, "esp_ble_gattc_write_char failed, status=%d", 
                      status);
 }
 
