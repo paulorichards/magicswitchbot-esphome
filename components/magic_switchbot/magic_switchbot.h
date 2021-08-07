@@ -3,6 +3,7 @@
 #include "esphome/core/component.h"
 #include "esphome/components/ble_client/ble_client.h"
 #include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
+#include "mbedtls/aes.h"
 
 #ifdef ARDUINO_ARCH_ESP32
 #include <esp_gattc_api.h>
@@ -33,6 +34,7 @@ class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNo
  private:
     uint16_t char_handle_;
     uint8_t current_request_;
+    mbedtls_aes_context aes_context_;
 
     uint8_t token_[4];
     void login();
