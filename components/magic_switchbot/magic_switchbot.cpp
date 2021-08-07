@@ -118,7 +118,7 @@ void MagicSwitchbot::check_battery(){
    chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID);
    status = esp_ble_gattc_read_char(this->parent_->gattc_if, this->parent_->conn_id, chr->handle, ESP_GATT_AUTH_REQ_NONE);
 
-ESP_LOGI(TAG, "esp_ble_gattc_read_char Reading char";
+ESP_LOGI(TAG, "esp_ble_gattc_read_char Reading char");
 
   if (status) {
     ESP_LOGI(TAG, "esp_ble_gattc_read_char failed, status=%d",  status);  
