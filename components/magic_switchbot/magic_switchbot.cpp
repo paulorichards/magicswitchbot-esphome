@@ -18,9 +18,15 @@ void MagicSwitchbot::setup(){
 	
   mbedtls_aes_setkey_enc(&aes_context_, KEY, 128);
 
+    this->current_request_ = 0;
+
 }
 
-void MagicSwitchbot::loop(){}
+void MagicSwitchbot::loop(){
+  if (this->node_state == espbt::ClientState::Established){
+    this->get_token();
+  } 
+}
 
 void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param) {
   switch (event) {
@@ -47,16 +53,21 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
   }
 }
 
-/*
+
 void MagicSwitchbot::get_token(){
   unsigned char command[16] = {0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
+  unsigned char iv[16];
   unsigned char output[16];
 
-  mbedtls_aes_crypt_cbc( &aes_context_, MBEDTLS_AES_ENCRYPT, command, &output );
-  
+  mbedtls_aes_crypt_cbc( &aes_context_, MBEDTLS_AES_ENCRYPT, 16, iv, command, output );
+  auto chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_WRITE_UUID);
+   esp_ble_gattc_write_char(this->parent_->gattc_if, this->parent_->conn_id, chr, 16,
+                                       output, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
+   if (status)
+            ESP_LOGW(TAG, "esp_ble_gattc_write_char failed, status=%d", 
+                     status);
 }
-*/
+
 }  // namespace magic_switchbot
 }  // namespace esphome
 
