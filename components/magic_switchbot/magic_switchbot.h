@@ -37,9 +37,10 @@ class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNo
     mbedtls_aes_context aes_context_;
 
     uint8_t token_[4];
+    uint8_t notification_[16];
+    bool is_logged_in_;
     void login();
-
-    bool is_logged_in_;    
+    void decode(uint8_t *value, uint16_t length, uint8_t *output );
 };
 
 }  // namespace magic_switchbot

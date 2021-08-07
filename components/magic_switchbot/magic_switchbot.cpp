@@ -61,6 +61,12 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
       }
       break;
     }
+    case ESP_GATTC_NOTIFY_EVT: {
+      this->decode(param->notify.value, param->notify.value_len, this->notification_);
+      for (int i; i < 16; i++)
+        ESP_LOGI(TAG, "Notification data %02X", this->notification_[i]);
+      break; 
+    }
   }
 }
 
@@ -85,6 +91,12 @@ void MagicSwitchbot::login(){
     this->is_logged_in_ = true;
     std::memcpy(output + 3, this->token_, 4);
   }
+}
+
+void MagicSwitchbot::decode(uint8_t *value, uint16_t length, uint8_t *output ){
+  uint8_t iv[16];
+  mbedtls_aes_crypt_cbc( &aes_context_, MBEDTLS_AES_ENCRYPT, length, iv, 16, output );
+  
 }
 
 }  // namespace magic_switchbot
