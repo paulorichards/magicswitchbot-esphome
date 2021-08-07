@@ -28,7 +28,7 @@ class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNo
   float get_setup_priority() const override { return setup_priority::DATA; }
   
  private:
-    mbedtls_aes_context aes_context;
+    mbedtls_aes_context aes_context_;
 };
 
 }  // namespace magic_switchbot

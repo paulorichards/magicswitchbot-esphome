@@ -14,9 +14,9 @@ void MagicSwitchbot::dump_config() {
 
 void MagicSwitchbot::setup(){
   
-  mbedtls_aes_init(this->&aes_context);
+  mbedtls_aes_init(&aes_context_);
 	
-  mbedtls_aes_setkey_enc(this->&aes_context, key, 128);
+  mbedtls_aes_setkey_enc(&aes_context_, KEY, 128);
 }
 
 void MagicSwitchbot::loop(){}
