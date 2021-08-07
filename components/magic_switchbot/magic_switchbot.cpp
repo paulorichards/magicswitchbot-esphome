@@ -13,8 +13,6 @@ void MagicSwitchbot::dump_config() {
 }
 
 
-}
-
 }  // namespace magic_switchbot
 }  // namespace esphome
 
