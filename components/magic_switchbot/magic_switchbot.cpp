@@ -64,6 +64,7 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
       break;
     }
     case ESP_GATTC_NOTIFY_EVT: {
+      ESP_LOGI(TAG, "Got Notification event");
       this->decode(param->notify.value, param->notify.value_len, this->notification_);
       for (int i = 0; i < 16; i++)
         ESP_LOGI(TAG, "Notification data %02X", this->notification_[i]);
@@ -96,7 +97,8 @@ void MagicSwitchbot::login(){
 }
 
 void MagicSwitchbot::check_battery(){
-  //TODO: Password support
+  ESP_LOGI(TAG, "Checking battery");
+
   unsigned char command[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };;
   unsigned char iv[16];
   unsigned char output[16];
@@ -111,6 +113,13 @@ void MagicSwitchbot::check_battery(){
   if (status) {
     ESP_LOGI(TAG, "esp_ble_gattc_write_char failed, status=%d",  status);  
   }
+
+  int length;
+   chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID);
+   status = esp_ble_gattc_read_char(this->parent_->gattc_if, this->parent_->conn_id, chr->handle, &length , &output, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
+    for (int i = 0; i < 16; i++)
+        ESP_LOGI(TAG, "Raded data %02X", output[i]);
+    
   
 }
 
