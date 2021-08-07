@@ -32,15 +32,15 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
     case ESP_GATTC_SEARCH_CMPL_EVT: {
       auto chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID);
       if (chr == nullptr) {
-        ESP_LOGW(TAG, "[%s] No control service found at device, not an Anova..?", this->get_name().c_str());
-        ESP_LOGW(TAG, "[%s] Note, this component does not currently support Anova Nano.", this->get_name().c_str());
+        ESP_LOGW(TAG, "No control service found at device, not an Anova..?");
+        ESP_LOGW(TAG, "Note, this component does not currently support Anova Nano.");
         break;
       }
       this->char_handle_ = chr->handle;
 
       auto status = esp_ble_gattc_register_for_notify(this->parent_->gattc_if, this->parent_->remote_bda, chr->handle);
       if (status) {
-        ESP_LOGW(TAG, "[%s] esp_ble_gattc_register_for_notify failed, status=%d", this->get_name().c_str(), status);
+        ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
       }
       break;
     }
