@@ -10,7 +10,7 @@
 namespace esphome {
 namespace magic_switchbot {
 
-class MagicSwitchbot : public esphome::ble_client::BLEClientNode {
+class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNode {
  public:
   void dump_config() override;
   float get_setup_priority() const override { return setup_priority::DATA; }
