@@ -31,7 +31,7 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
   switch (event) {
     case ESP_GATTC_OPEN_EVT: {
       if (param->open.status == ESP_GATT_OK) {
-        ESP_LOGI(TAG, "Connected successfully!",);
+        ESP_LOGI(TAG, "Connected successfully!");
         break;
       }
       break;
