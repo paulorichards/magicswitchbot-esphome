@@ -58,6 +58,8 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
         if (status) {
           ESP_LOGI(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
         }
+        this->check_battery();
+
       }
       break;
     }
@@ -87,10 +89,29 @@ void MagicSwitchbot::login(){
     this->is_logged_in_ = false;
   }
   else {
-    ESP_LOGI(TAG, "session established",  status);
+    ESP_LOGI(TAG, "session established");
     this->is_logged_in_ = true;
     std::memcpy(output + 3, this->token_, 4);
   }
+}
+
+void MagicSwitchbot::check_battery(){
+  //TODO: Password support
+  unsigned char command[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };;
+  unsigned char iv[16];
+  unsigned char output[16];
+
+  std::memcpy(command, CHECK_BATTERY_COMMAND, 4);
+  std::memcpy(command + 4, CHECK_BATTERY_COMMAND, 4);
+
+  mbedtls_aes_crypt_cbc( &aes_context_, MBEDTLS_AES_ENCRYPT, 16, iv, command, output );
+  auto chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_WRITE_UUID);
+  auto status = esp_ble_gattc_write_char(this->parent_->gattc_if, this->parent_->conn_id, chr->handle, COMMAND_SIZE, output, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
+  
+  if (status) {
+    ESP_LOGI(TAG, "esp_ble_gattc_write_char failed, status=%d",  status);  
+  }
+  
 }
 
 void MagicSwitchbot::decode(uint8_t *value, uint16_t length, uint8_t *output ){

@@ -21,6 +21,7 @@ static const uint16_t MAGIC_SWITCHBOT_CHARACTERISTIC_WRITE_UUID = 0x36F5;
 static const uint16_t MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID = 0x36F6;
 static const uint8_t KEY[]	         = { 0x2A, 0x61, 0x39, 0x5C, 0x40, 0x55, 0x49, 0x51, 0x3A, 0x5A, 0x4B, 0x62, 0x1B, 0x6D, 0x37, 0x35 };
 static const uint8_t LOGIN_COMMAND[] = { 0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static const uint8_t CHECK_BATTERY_COMMAND[] = { 0x02, 0x01, 0x01, 0x01};
 
 class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNode {
  public:
@@ -40,6 +41,7 @@ class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNo
     uint8_t notification_[16];
     bool is_logged_in_;
     void login();
+    void check_battery();
     void decode(uint8_t *value, uint16_t length, uint8_t *output );
 };
 
