@@ -3,7 +3,7 @@
 #include "esphome/core/component.h"
 #include "esphome/components/ble_client/ble_client.h"
 #include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
-#include "mbedtls/aes.h"
+#include "protocol.h"
 
 #ifdef ARDUINO_ARCH_ESP32
 #include <esp_gattc_api.h>
@@ -14,12 +14,13 @@ namespace magic_switchbot {
 
 namespace espbt = esphome::esp32_ble_tracker;
 
+static const uint16_t COMMAND_SIZE = 16;
 
 static const uint16_t MAGIC_SWITCHBOT_SERVICE_UUID = 0xFEE7;
 static const uint16_t MAGIC_SWITCHBOT_CHARACTERISTIC_WRITE_UUID = 0x36F5;
 static const uint16_t MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID = 0x36F6;
-static const unsigned char KEY[]	= { 0x2A, 0x61, 0x39, 0x5C, 0x40, 0x55, 0x49, 0x51, 0x3A, 0x5A, 0x4B, 0x62, 0x1B, 0x6D, 0x37, 0x35 };
-
+static const uint8_t KEY[]	         = { 0x2A, 0x61, 0x39, 0x5C, 0x40, 0x55, 0x49, 0x51, 0x3A, 0x5A, 0x4B, 0x62, 0x1B, 0x6D, 0x37, 0x35 };
+static const uint8_t LOGIN_COMMAND[] = { 0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNode {
  public:
@@ -33,10 +34,11 @@ class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNo
  private:
     uint16_t char_handle_;
     uint8_t current_request_;
-    mbedtls_aes_context aes_context_;
-    unsigned char token_[4];
 
-    void get_token();
+    uint8_t token_[4];
+    void login();
+
+    bool is_logged_in_;    
 };
 
 }  // namespace magic_switchbot
