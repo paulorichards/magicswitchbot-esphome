@@ -63,7 +63,7 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
     }
     case ESP_GATTC_NOTIFY_EVT: {
       this->decode(param->notify.value, param->notify.value_len, this->notification_);
-      for (int i; i < 16; i++)
+      for (int i = 0; i < 16; i++)
         ESP_LOGI(TAG, "Notification data %02X", this->notification_[i]);
       break; 
     }
