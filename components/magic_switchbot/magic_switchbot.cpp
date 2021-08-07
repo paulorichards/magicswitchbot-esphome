@@ -37,7 +37,7 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
     }
     case ESP_GATTC_DISCONNECT_EVT: {
       ESP_LOGW(TAG, "Disconnected!");
-      this->is_logged_in_ = false
+      this->is_logged_in_ = false;
       break;
     }
     case ESP_GATTC_REG_FOR_NOTIFY_EVT: {
@@ -83,7 +83,7 @@ void MagicSwitchbot::login(){
   else {
     ESP_LOGI(TAG, "session established",  status);
     this->is_logged_in_ = true;
-    std::memcpy(data + 3, this->token_, 4);
+    std::memcpy(output + 3, this->token_, 4);
   }
 }
 
