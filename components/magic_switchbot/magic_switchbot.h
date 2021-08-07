@@ -12,6 +12,9 @@
 namespace esphome {
 namespace magic_switchbot {
 
+namespace espbt = esphome::esp32_ble_tracker;
+
+
 static const uint16_t MAGIC_SWITCHBOT_SERVICE_UUID = 0xFEE7;
 static const uint16_t MAGIC_SWITCHBOT_CHARACTERISTIC_WRITE_UUID = 0x36F5;
 static const uint16_t MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID = 0x36F6;
@@ -28,7 +31,10 @@ class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNo
   float get_setup_priority() const override { return setup_priority::DATA; }
   
  private:
+    uint16_t char_handle_;
+    uint8_t current_request_;
     mbedtls_aes_context aes_context_;
+    unsigned char token_[4]
 };
 
 }  // namespace magic_switchbot
