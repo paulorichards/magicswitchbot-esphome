@@ -12,9 +12,14 @@ void MagicSwitchbot::dump_config() {
   ESP_LOGCONFIG(TAG, "Magic Switchbot");
 }
 
-void MagicSwitchbot::loop(){
-
+void MagicSwitchbot::setup(){
+  
+  mbedtls_aes_init(this->&aes_context);
+	
+  mbedtls_aes_setkey_enc(this->&aes_context, key, 128);
 }
+
+void MagicSwitchbot::loop(){}
 
 void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param) {
   switch (event) {
