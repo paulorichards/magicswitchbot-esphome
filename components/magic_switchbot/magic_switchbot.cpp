@@ -1,4 +1,4 @@
-#include <cstdint>
+#include <cstring>
 
 #include "magic_switchbot.h"
 #include "esphome/core/log.h"
