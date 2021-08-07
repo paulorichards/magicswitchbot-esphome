@@ -47,6 +47,7 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
   }
 }
 
+/*
 void MagicSwitchbot::get_token(){
   unsigned char command[16] = {0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
@@ -55,7 +56,7 @@ void MagicSwitchbot::get_token(){
   mbedtls_aes_crypt_cbc( &aes_context_, MBEDTLS_AES_ENCRYPT, command, &output );
   
 }
-
+*/
 }  // namespace magic_switchbot
 }  // namespace esphome
 
