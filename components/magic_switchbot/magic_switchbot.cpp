@@ -61,7 +61,7 @@ void MagicSwitchbot::get_token(){
 
   mbedtls_aes_crypt_cbc( &aes_context_, MBEDTLS_AES_ENCRYPT, 16, iv, command, output );
   auto chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_WRITE_UUID);
-   esp_ble_gattc_write_char(this->parent_->gattc_if, this->parent_->conn_id, chr->handle, 16, output, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
+      auto status = esp_ble_gattc_write_char(this->parent_->gattc_if, this->parent_->conn_id, chr->handle, 16, output, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
    if (status)
             ESP_LOGW(TAG, "esp_ble_gattc_write_char failed, status=%d", 
                      status);
