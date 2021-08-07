@@ -46,7 +46,8 @@ void MagicSwitchbot::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
-      this->get_token()
+      this->get_token();
+
       auto chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID);
       if (chr == nullptr) {
         ESP_LOGI(TAG, "No control service found at device, not an Anova..?");
