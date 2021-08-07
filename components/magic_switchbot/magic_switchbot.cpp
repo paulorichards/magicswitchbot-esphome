@@ -114,12 +114,15 @@ void MagicSwitchbot::check_battery(){
     ESP_LOGI(TAG, "esp_ble_gattc_write_char failed, status=%d",  status);  
   }
 
-  int length;
+  
    chr = this->parent_->get_characteristic(MAGIC_SWITCHBOT_SERVICE_UUID, MAGIC_SWITCHBOT_CHARACTERISTIC_READ_UUID);
-   status = esp_ble_gattc_read_char(this->parent_->gattc_if, this->parent_->conn_id, chr->handle, &length , &output, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
-    for (int i = 0; i < 16; i++)
-        ESP_LOGI(TAG, "Raded data %02X", output[i]);
-    
+   status = esp_ble_gattc_read_char(this->parent_->gattc_if, this->parent_->conn_id, chr->handle, ESP_GATT_AUTH_REQ_NONE);
+
+ESP_LOGI(TAG, "esp_ble_gattc_read_char Reading char";
+
+  if (status) {
+    ESP_LOGI(TAG, "esp_ble_gattc_read_char failed, status=%d",  status);  
+  }
   
 }
 
