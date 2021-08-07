@@ -35,6 +35,8 @@ class MagicSwitchbot : public Component, public esphome::ble_client::BLEClientNo
     uint8_t current_request_;
     mbedtls_aes_context aes_context_;
     unsigned char token_[4]
+
+    void get_token();
 };
 
 }  // namespace magic_switchbot
